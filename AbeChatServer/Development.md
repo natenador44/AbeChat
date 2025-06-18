@@ -3,7 +3,7 @@
 ## Development Environment
 
 ### Install Java 21
-#### Linux
+#### Debian-basked Linux (e.g. Ubuntu)
 Install with `apt`.
 ```shell
 sudo apt install openjdk-21-jdk openjdk-21-dbg openjdk-21-source
