@@ -36,7 +36,7 @@ _shrug_
 #### Command Line
 Run this to build the server from the AbeChatServer root directory.
 ```shell
-./gradle bootJar
+./gradlew bootJar
 ```
 Then run this to start the server (again from the AbeChatServer root directory)
 ```shell
