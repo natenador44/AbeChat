@@ -3,6 +3,7 @@ package com.abechat.server.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/abechat")
@@ -14,10 +15,5 @@ public class HomeController {
     @GetMapping(path = {"", "/"})
     public String index() {
         return "index";
-    }
-
-    @GetMapping("/test")
-    public String testString(){
-        return "Message Sent Successfully";
     }
 }
