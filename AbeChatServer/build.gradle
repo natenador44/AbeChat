@@ -27,6 +27,8 @@ dependencies {
     // Logging
     implementation 'org.slf4j:slf4j-api'
     implementation 'ch.qos.logback:logback-core'
+    //HTML Rendering
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
     // Database Access and Migration
 //    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
