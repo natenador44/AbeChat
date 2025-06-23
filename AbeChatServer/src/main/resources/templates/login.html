@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/loginstyles.css}" />
+    <title>Abe Chat</title>
+</head>
+<body class="background-container">
+       <!-- placeholder navbar -->
+    <nav class="navbar">
+    <ul>
+        <li><a th:href="@{/abechat/}" class="button">Home</a></li>
+        <li><a class="button">Chat</a></li>
+        <li><a class="button">Profile</a></li>
+        <li><a class="button">Settings</a></li>
+    </ul>
+</nav>
+
+<!-- Login form-->
+<!-- TODO: hook up backend. REMEMBER TO MATCH THE ENDPOINT TO WHATEVER GETS MADE LATER-->
+<div class="background-container">
+        <h1>Login</h1>
+        <div class="form-container">
+            <form th:action="@{/user/login/auth}" method="post" class="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required />
+                </div>
+                <div th:if="${param.error}" class="error-message">
+                    Invalid username or password
+                </div>
+                <button type="submit" class="button">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

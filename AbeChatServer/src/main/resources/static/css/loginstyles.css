@@ -1,0 +1,149 @@
+h1 {
+    font-family: 'Poppins', 'Arial', sans-serif; 
+    font-size: 3rem;
+    font-weight: 600;
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4); 
+    -webkit-background-clip: text; 
+    background-clip: text;
+    color: transparent; 
+    text-align: center;
+    margin: 2.5rem 0;
+    animation: fadeIn 1.5s ease-in-out; 
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.background-container {
+    background: radial-gradient(circle at center, #2c3e50 0%, #1a252f 100%); 
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Navbar Styles*/
+.navbar {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 40px 0;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 15px; 
+}
+
+.navbar li {
+    display: inline;
+}
+
+.button {
+    text-decoration: none;
+    padding: 10px 20px;
+    font-family: 'Poppins', 'Arial', sans-serif; 
+    font-size: 1.1rem;
+    font-weight: 500;
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4); 
+    color: #ffffff;
+    border-radius: 8px; 
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    transition: all 0.3s ease; 
+    position: relative;
+    overflow: hidden; 
+}
+
+.button:hover {
+    background: linear-gradient(90deg, #e55a5a, #3db8b0); 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
+    color: #ffffff;
+}
+
+/* Form Container */
+.form-container {
+    background: rgba(255, 255, 255, 0.95); 
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px; /* Constrain form width */
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Login Form */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Space between form elements */
+}
+
+/* Form Group (Label + Input) */
+.form-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-family: 'Poppins', 'Arial', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2c3e50; 
+    transition: color 0.3s ease;
+}
+
+.form-group input {
+    padding: 0.75rem 1rem;
+    font-family: 'Poppins', 'Arial', sans-serif;
+    font-size: 1rem;
+    color: #2c3e50;
+    background: #f5f7fa; 
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #4ecdc4; 
+    box-shadow: 0 0 8px rgba(78, 205, 196, 0.3);
+}
+
+/* Error Message */
+.error-message {
+    font-family: 'Poppins', 'Arial', sans-serif;
+    font-size: 0.9rem;
+    color: #ff6b6b; 
+    text-align: center;
+}
+
+/* Submit Button (Reuse .button class) */
+.login-form .button {
+    width: 100%; 
+    padding: 0.75rem;
+    font-size: 1.2rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .form-container {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+}
