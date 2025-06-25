@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping("/user/login")
+@RequestMapping("/login")
 public class LoginController {
     //Rendering for login html page
     @GetMapping(path = {"", "/"})
