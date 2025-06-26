@@ -1,0 +1,1 @@
+insert into users values ('6ae1c750-5ab3-48a2-8897-d42cf0b36b14', 'testuser1', 'JGFyZ29uMmkkdj0xOSRtPTE2LHQ9MixwPTEkYzNobVEyMVNWbVkxYTB0V09FcFJRZyRpUHZLMFRnRzFyUTA0TG1NSnJ1dkxn');
