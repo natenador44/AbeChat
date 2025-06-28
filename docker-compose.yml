@@ -1,0 +1,28 @@
+services:
+  abechat-server:
+    build:
+      context: ./AbeChatServer # The build context is the current directory (where docker-compose.yml is located)
+      dockerfile: Dockerfile # Specifies the name of the Dockerfile to use (defaults to 'Dockerfile' if omitted)
+    ports:
+      - "8000:8000" # Map port 8000 on the host to port 8000 in the container
+    depends_on:
+      - db
+    environment:
+      DB_URL: ${ABECHAT_PSQL_URL} 
+      DB_USER: ${ABECHAT_PSQL_USER} 
+      DB_PASSWORD: ${ABECHAT_PSQL_PASSWORD} 
+      SPRING_PROFILES_ACTIVE: release
+  db:
+    image: postgres:17 # Uses the latest official PostgreSQL image
+    restart: always       # Restarts the container if it stops
+    environment:
+      POSTGRES_USER: ${ABECHATA_PSQL_USER}       # Database username
+      POSTGRES_PASSWORD: ${ABECHAT_PSQL_PASSWORD} # Database password
+      POSTGRES_DB: ${ABECHAT_DB}     # Database name
+    ports:
+      - "5432:5432" # Maps host port 5432 to container port 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Persists data to a named volume
+
+volumes:
+  pgdata: # Defines the named volume for data persistence
