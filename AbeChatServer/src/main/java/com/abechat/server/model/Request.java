@@ -9,7 +9,14 @@ public class Request {
     // Run into argon2 matching issues if I use char[] - I suspect some sort of encoding issue
     // byte[] is not serializable as JSON from what I can tell.
 
-    public record Login(String username, String password) {}
+    public record Login(String username, String password) {
+        @Override
+        public String toString() {
+            return "LoginRequest{" +
+                    "username = " + username + ", " +
+                    "password = [REDACTED]}";
+        }
+    }
     public record NewUser(String username, String password) {
 
         /**

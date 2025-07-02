@@ -38,8 +38,7 @@ public class SecurityConfig {
 
     private static HttpSecurity enableCommonSecurity(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.POST, "/api/user/create").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
+                .requestMatchers("/api/user/create", "/api/user/login", "/", "/login", "/css/*.css").permitAll()
                 .anyRequest().authenticated());
     }
 
