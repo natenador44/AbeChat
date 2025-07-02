@@ -5,7 +5,7 @@ COPY src ./src
 COPY build.gradle build.gradle
 COPY gradle/ ./gradle
 COPY gradlew gradlew
-RUN ./gradlew bootJar
+RUN ./gradlew bootJar -Predis-session
 
 # Stage 2: Run the app
 FROM amazoncorretto:21
