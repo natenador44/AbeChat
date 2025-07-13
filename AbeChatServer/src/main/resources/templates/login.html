@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/css/loginstyles.css}" />
+    <link rel="stylesheet" th:href="@{/css/generalStyles.css}" />
     <title>Abe Chat</title>
 </head>
 <body class="background-container">
@@ -10,9 +10,6 @@
     <nav class="navbar">
     <ul>
         <li><a th:href="@{/abechat/}" class="button">Home</a></li>
-        <li><a class="button">Chat</a></li>
-        <li><a class="button">Profile</a></li>
-        <li><a class="button">Settings</a></li>
     </ul>
 </nav>
 
@@ -38,6 +35,7 @@
                 </div>
                 <button type="submit" class="button">Login</button>
             </form>
+            <p>Need to create an account? <a th:href="@{/createUser}">Sign up here</a></p>
         </div>
     </div>
 </body>
