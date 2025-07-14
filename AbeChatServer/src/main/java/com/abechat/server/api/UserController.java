@@ -31,14 +31,14 @@ public class UserController {
     }
 
     @PostMapping(value = { "/login", "/login/" })
-    public ResponseEntity<Void> login(Request.Login loginRequest, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<Void> login(@RequestBody Request.Login loginRequest, HttpServletRequest request, HttpServletResponse response) {
         loginService.login(loginRequest, request, response);
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = { "/create", "/create/" })
-    public ResponseEntity<Void> create(HttpServletRequest servletRequest, @RequestBody Request.NewUser newUserRequest) {
+    public ResponseEntity<Void> create(@RequestBody Request.NewUser newUserRequest, HttpServletRequest servletRequest) {
         try {
             LOGGER.info("[{}] Attempting to create new user {}", servletRequest.getRemoteAddr(), newUserRequest.username());
             userService.createNew(newUserRequest);
