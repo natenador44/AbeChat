@@ -32,14 +32,12 @@ public class UserDao {
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var params = new MapSqlParameterSource().addValue("username", username);
-        var user = abeChatJdbcTemplate.queryForObject(GET_USER_BY_USERNAME, params, (rs, row) ->
-                new IdUser(UUID.fromString(rs.getString("id")), rs.getString("name"), rs.getString("password")));
-
-        if (user == null) {
+        try {
+            return abeChatJdbcTemplate.queryForObject(GET_USER_BY_USERNAME, params, (rs, row) ->
+                    new IdUser(UUID.fromString(rs.getString("id")), rs.getString("name"), rs.getString("password")));
+        } catch (EmptyResultDataAccessException e) {
             throw new UsernameNotFoundException(username);
         }
-
-        return user;
     }
 
     public boolean usernameExists(String username) {

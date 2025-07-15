@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class ApiKeyAuthFilter extends GenericFilterBean {
-    private static final String AUTH_TOKEN_HEADER_NAME = "X-API-KEY";
+    public static final String AUTH_TOKEN_HEADER_NAME = "X-API-KEY";
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         if (servletRequest instanceof HttpServletRequest request) {

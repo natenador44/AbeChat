@@ -1,5 +1,9 @@
 package com.abechat.server;
 
+import com.abechat.server.model.IdUser;
+import com.abechat.server.model.Request;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,8 +17,27 @@ public class TestUserSetup {
     public static final String GARY_USERNAME = "gary";
     public static final String GARY_PASSWORD = "secret";
 
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     private final NamedParameterJdbcTemplate abechatJdbcTemplate;
     private final PasswordEncoder passwordEncoder;
+
+
+    public static String loginRequestAsJson(String username, String password) {
+        try {
+            return MAPPER.writeValueAsString(new Request.Login(username, password));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String createUserRequestAsJson(String username, String password) {
+        try {
+            return MAPPER.writeValueAsString(new Request.NewUser(username, password));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Autowired
     public TestUserSetup(NamedParameterJdbcTemplate abechatJdbcTemplate, PasswordEncoder passwordEncoder) {
