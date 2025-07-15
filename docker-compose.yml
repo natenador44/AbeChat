@@ -1,10 +1,28 @@
 services:
-  abechat-server:
+  # abechat server in release mode with redis session enabled
+  abechat-server-r-rs:
+    build:
+      context: ./AbeChatServer # The build context is the current directory (where docker-compose.yml is located)
+      dockerfile: DockerfileRedisSession # Specifies the name of the Dockerfile to use (defaults to 'Dockerfile' if omitted)
+    ports:
+      - "8080:8080" # Map port 8000 on the host to port 8000 in the container
+    depends_on:
+      - db
+      - redis-session
+    environment:
+      DB_URL: ${ABECHAT_PSQL_URL} 
+      DB_USER: ${ABECHAT_PSQL_USER} 
+      DB_PASSWORD: ${ABECHAT_PSQL_PASSWORD} 
+      SPRING_PROFILES_ACTIVE: release
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+  # abechat server in release mode and in-memory session management
+  abechat-server-r:
     build:
       context: ./AbeChatServer # The build context is the current directory (where docker-compose.yml is located)
       dockerfile: Dockerfile # Specifies the name of the Dockerfile to use (defaults to 'Dockerfile' if omitted)
     ports:
-      - "8000:8000" # Map port 8000 on the host to port 8000 in the container
+      - "8080:8080" # Map port 8000 on the host to port 8000 in the container
     depends_on:
       - db
     environment:
@@ -12,11 +30,24 @@ services:
       DB_USER: ${ABECHAT_PSQL_USER} 
       DB_PASSWORD: ${ABECHAT_PSQL_PASSWORD} 
       SPRING_PROFILES_ACTIVE: release
+  # abechat server in dev mode
+  abechat-server-d:
+    build:
+      context: ./AbeChatServer # The build context is the current directory (where docker-compose.yml is located)
+      dockerfile: Dockerfile # Specifies the name of the Dockerfile to use (defaults to 'Dockerfile' if omitted)
+    ports:
+      - "8080:8080" # Map port 8000 on the host to port 8000 in the container
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+  redis-session:
+    image: redis:latest
+    ports:
+      - 6379:6379
   db:
     image: postgres:17 # Uses the latest official PostgreSQL image
     restart: always       # Restarts the container if it stops
     environment:
-      POSTGRES_USER: ${ABECHATA_PSQL_USER}       # Database username
+      POSTGRES_USER: ${ABECHAT_PSQL_USER}       # Database username
       POSTGRES_PASSWORD: ${ABECHAT_PSQL_PASSWORD} # Database password
       POSTGRES_DB: ${ABECHAT_DB}     # Database name
     ports:

@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/css/homestyles.css}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abe Chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/homestyles.css}">
 </head>
 <body class="background-container">
-
-    <h1>Welcome to Abe Chat Pre-Alpha!!!!!!!!</h1>
-    <div id="chat">
+    <div class="navbar-container">
         <nav class="navbar">
-    <!-- placeholder navbar -->
-    <ul>
-        <li><a class="button">Login</a></li>
-        <li><a class="button">Chat</a></li>
-        <li><a class="button">Profile</a></li>
-        <li><a class="button">Settings</a></li>
-    </ul>
-</nav>
-</div>
+            <ul>
+                <li><a th:href="@{/login}" class="button">Login</a></li>
+                <li><a th:href="@{/chat}" class="button">Chat</a></li>
+                <li><a th:href="@{/profile}" class="button">Profile</a></li>
+                <li><a th:href="@{/settings}" class="button">Settings</a></li>
+            </ul>
+        </nav>
+    </div>
+    <h1>Welcome to Abe Chat Pre-Alpha!</h1>
 </body>
 </html>

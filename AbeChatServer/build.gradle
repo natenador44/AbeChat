@@ -19,7 +19,15 @@ repositories {
 
 dependencies {
     // Endpoint Security
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.81'
+
+    // if you want to use redis to store session information, build and/or run by passing the -Predis-session flag
+    if (project.hasProperty("redis-session")) {
+        implementation("org.springframework.session:spring-session-data-redis")
+        implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    }
+//    implementation('io.lettuce:lettuce-core:6.7.1.RELEASE')
     // Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // Websockets
