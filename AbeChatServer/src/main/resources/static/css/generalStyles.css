@@ -28,6 +28,10 @@ h1 {
     justify-content: center;
 }
 
+#background-error-container{
+    background-image: url("/AbeChatServer/src/main/resources/static/images/RedBoy.png");
+}
+
 /* Navbar Styles*/
 .navbar {
     display: flex;

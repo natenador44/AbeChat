@@ -1,5 +1,8 @@
 package com.abechat.server.controller;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -59,7 +62,7 @@ public class CreateUserController {
         } catch (Exception e) {
             LOGGER.error("Error creating user: {}", e.getMessage());
             model.addAttribute("errorMessage", "Error creating user: " + e.getMessage());
-            return "createUser";
+            return "redirect:/error?message=" + URLEncoder.encode("Error creating user: " + e.getMessage(), StandardCharsets.UTF_8); //Sends specific error message to customer error page
         }
         LOGGER.info("Creating user account with username: " + createUserForm.getUsername());
 

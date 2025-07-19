@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/generalStyles.css}" />
+    <title>Abe Chat - Error</title>
+</head>
+<body id="error-background-container" class="background-container">
+    <div class="background-container">
+        <h1>Error</h1>
+        <div class="error-message">
+            <p th:if="${error}" th:text="${error}">An error occurred.</p>
+            <p th:if="${message}" th:text="${message}">Details not available.</p>
+            <p th:if="${status}" th:text="'HTTP Status: ' + ${status}"></p>
+            <p><a th:href="@{/abechat/}" class="button">Return to Home</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,11 +11,18 @@
     <div class="navbar-container">
         <nav class="navbar">
             <ul>
-                <li><a th:href="@{/login}" class="button">Login</a></li>
-                <li><a th:href="@{/createUser}" class="button">Create Account</a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" class="button">Login</a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/createUser}" class="button">Create Account</a></li>
+                <li sec:authorize="isAuthenticated()"><a class="button">Profile</a></li>
+                <li sec:authorize="isAuthenticated()"><a class="button">Settings</a></li>
             </ul>
         </nav>
     </div>
-    <h1>Welcome to Abe Chat Pre-Alpha!</h1>
+    <div sec:authorize="isAuthenticated()">
+        <h1>Welcome to Abechat, <span sec:authentication="name">User</span>!</h1>
+    </div>
+    <div sec:authorize="!isAuthenticated()">
+        <h1>Welcome to Abechat! Please log in or create an account above.</h1>
+    </div>
 </body>
 </html>
