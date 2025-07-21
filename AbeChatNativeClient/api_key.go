@@ -36,6 +36,7 @@ type apiKeyForm struct {
 func makeApiKeyUI(a *App) apiKeyForm {
 	instructions := widget.NewLabel("An API Key is required to use AbeChat")
 	apiKeyEntryError := widget.NewLabel("")
+	apiKeyEntryError.Importance = widget.DangerImportance
 	apiKeyEntryError.Hidden = true
 
 	apiKeyEntry := widget.NewEntry()
@@ -53,8 +54,8 @@ func makeApiKeyUI(a *App) apiKeyForm {
 		if err := apiKeyEntry.Validate(); err != nil {
 			apiKeyEntryError.Hidden = false
 			apiKeyEntryError.SetText(err.Error())
-			apiKeyEntryError.Importance = widget.DangerImportance
 		} else {
+			apiKeyEntryError.Hidden = true
 			a.apiKey = newKey
 			slog.Info("Successfully got an api key, moving on")
 		}
@@ -71,6 +72,7 @@ func makeApiKeyUI(a *App) apiKeyForm {
 		if err := apiKeyEntry.Validate(); err != nil {
 			submitButton.Disable()
 		} else {
+			apiKeyEntryError.Hidden = true
 			submitButton.Enable()
 		}
 	}
