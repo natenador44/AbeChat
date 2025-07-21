@@ -1,8 +1,3 @@
-<<<<<<< Updated upstream
-module github.com/natenador44/AbeChat/AbeChatNativeClient
-
-go 1.24.4
-=======
 module abechat.app
 
 go 1.24.4
@@ -43,4 +38,3 @@ require (
 	golang.org/x/text v0.22.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
->>>>>>> Stashed changes
