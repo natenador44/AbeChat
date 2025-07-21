@@ -11,7 +11,7 @@ func TestInstructions(t *testing.T) {
 	a := NewApp()
 	form := makeApiKeyUI(a)
 
-	if form.instructions.Text != "An API Key is required to use AbeChat" {
+	if form.instructions.Text != "Enter in the Server's Connection Details" {
 		t.Fatal("unexpected instructions text")
 	}
 }
@@ -86,3 +86,11 @@ func TestApiKeyOnAppAfterEnteringApiKeyAndPressingEnter(t *testing.T) {
 		t.Fatalf("expected api key '%s', got '%s' instead", apiKey, a.apiKey)
 	}
 }
+
+/*
+ * Future tests
+ * - modify above to include URL entry
+ * - test that error label is populated and shown if validation fails
+ * - test that each entry gets focus when that field has an error
+ * - test placeholder text for each entry field
+ */

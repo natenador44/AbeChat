@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"net/url"
 	"os"
 	"path"
 
@@ -14,14 +15,20 @@ import (
 type App struct {
 	inner      fyne.App
 	MainWindow fyne.Window
-	apiKey     string
+	connectionDetails
+}
+
+type connectionDetails struct {
+	url    *url.URL
+	apiKey string
 }
 
 func NewApp() *App {
 	app := app.New()
 	return &App{
-		inner:  app,
-		apiKey: "",
+		app,
+		nil,
+		connectionDetails{nil, ""},
 	}
 }
 
