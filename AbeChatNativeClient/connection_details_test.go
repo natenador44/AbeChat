@@ -88,6 +88,7 @@ func TestApiKeyOnAppAfterEnteringApiKeyAndPressingEnter(t *testing.T) {
 }
 
 /*
+ * Figure out how to mock service calls
  * Future tests
  * - modify above to include URL entry
  * - test that error label is populated and shown if validation fails

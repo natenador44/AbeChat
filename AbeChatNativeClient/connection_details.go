@@ -20,7 +20,7 @@ func showApiKeyForm(a *App) {
 		form.error,
 		form.urlEntry,
 		form.apiKeyEntry,
-		form.submitButton,
+		container.New(layout.NewHBoxLayout(), form.progress, form.submitButton),
 	)
 	a.MainWindow.SetContent(content)
 	a.MainWindow.Resize(fyne.NewSize(300, 75))
@@ -34,6 +34,7 @@ type apiKeyForm struct {
 	urlEntry     *widget.Entry
 	apiKeyEntry  *widget.Entry
 	submitButton *widget.Button
+	progress     *widget.ProgressBarInfinite
 }
 
 func makeApiKeyUI(a *App) apiKeyForm {
@@ -47,7 +48,7 @@ func makeApiKeyUI(a *App) apiKeyForm {
 		if len(u) == 0 {
 			err = errors.New("Server URL cannot be empty")
 		} else {
-			_, err = url.Parse(u)
+			_, err = url.ParseRequestURI(u)
 		}
 		return
 	}
@@ -63,6 +64,9 @@ func makeApiKeyUI(a *App) apiKeyForm {
 	}
 	apiKeyEntry.PlaceHolder = "API Key"
 
+	progress := widget.NewProgressBarInfinite()
+	progress.Hide()
+
 	submit := func() {
 		if err := urlEntry.Validate(); err != nil {
 			errorLabel.Hidden = false
@@ -74,9 +78,28 @@ func makeApiKeyUI(a *App) apiKeyForm {
 			a.MainWindow.Canvas().Focus(apiKeyEntry)
 		} else {
 			errorLabel.Hidden = true
-			a.connectionDetails.url, _ = url.Parse(urlEntry.Text)
-			a.connectionDetails.apiKey = apiKeyEntry.Text
-			slog.Info("Successfully got connection details, moving on.", "connection url", a.connectionDetails.url.String())
+
+			progress.Show()
+			progress.Start()
+
+			slog.Info("Successfully got connection details, testing connection...", "connection url", urlEntry.Text)
+
+			u, _ := url.ParseRequestURI(urlEntry.Text)
+			s := NewService(u, apiKeyEntry.Text)
+
+			err := s.Ping()
+
+			progress.Stop()
+			progress.Hide()
+
+			if err != nil {
+				slog.Error("failed to make connection", "err", err)
+				errorLabel.Hidden = false
+				errorLabel.SetText("Connection Failed")
+			} else {
+				slog.Info("connection successful, moving on")
+				a.Service = s
+			}
 			// validate connection -- have an endpoint that validates the api key.
 			// if the connection is successfully made and the api key is valid, move forward
 			// otherwise show an error
@@ -98,6 +121,7 @@ func makeApiKeyUI(a *App) apiKeyForm {
 		urlEntry:     urlEntry,
 		apiKeyEntry:  apiKeyEntry,
 		submitButton: submitButton,
+		progress:     progress,
 	}
 }
 
