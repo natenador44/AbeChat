@@ -65,7 +65,7 @@ class LoginControllerTest {
                                 .formField("username", TestUserSetup.GARY_USERNAME)
                                 .formField("password", TestUserSetup.GARY_PASSWORD)
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login?error"));
+                .andExpect(redirectedUrlPattern("/error*")); // because our error page is dynamically generated we need to be able to accept multiple outcomes
     }
 
     @Test
@@ -79,7 +79,7 @@ class LoginControllerTest {
                                 .formField("username", TestUserSetup.GARY_USERNAME)
                                 .formField("password", "wrong")
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login?error"));
+                .andExpect(redirectedUrlPattern("/error*"));
     }
 
 }

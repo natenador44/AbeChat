@@ -1,5 +1,6 @@
 package com.abechat.server.security;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -16,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -60,7 +63,8 @@ public class SecurityConfig {
      */
     private static HttpSecurity enableCommonWebSecurity(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/login", "/css/*.css").permitAll()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .requestMatchers("/", "/login", "/createUser", "/error").permitAll()
                 .anyRequest().authenticated());
     }
 
