@@ -42,7 +42,9 @@ public class LoginController {
         try {
             loginService.login(login, request, response);
         } catch (AuthenticationException e) {
-            return "redirect:/error?message=" + URLEncoder.encode("Error logging in user: " + e.getMessage(), StandardCharsets.UTF_8); //Sends specific error message to customer error page
+            return "redirect:/login?error";
+        } catch(Exception e){
+             return "redirect:/error?message=" + URLEncoder.encode("Error logging in user: " + e.getMessage(), StandardCharsets.UTF_8); //Sends specific error message to customer error page
         }
         return "redirect:/"; // change to whatever page we go to after login
     }
