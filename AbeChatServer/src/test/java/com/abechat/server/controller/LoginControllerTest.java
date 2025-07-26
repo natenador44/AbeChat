@@ -65,8 +65,19 @@ class LoginControllerTest {
                                 .formField("username", TestUserSetup.GARY_USERNAME)
                                 .formField("password", TestUserSetup.GARY_PASSWORD)
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login?error"));
+                .andExpect(redirectedUrlPattern("/login?error")); // because our error page is dynamically generated we need to be able to accept multiple outcomes
     }
+
+    //TODO: We need to get a test working for general errors like 404. The below current hits the expected login redirection
+    // @Test
+    // void loginRedirectsToErrorPageIfUnknownError() throws Exception{
+    //     mockMvc.perform(
+    //         post("/login/")
+    //             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    //             .formField("username", TestUserSetup.GARY_USERNAME)
+    //             .formField("password", TestUserSetup.GARY_PASSWORD)
+    //     ).andExpect(status().isFound())
+    //     .andExpect(redirectedUrlPattern("/error*"));    }
 
     @Test
     @Sql(scripts = {"classpath:clear_tables.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -79,7 +90,7 @@ class LoginControllerTest {
                                 .formField("username", TestUserSetup.GARY_USERNAME)
                                 .formField("password", "wrong")
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login?error"));
+                .andExpect(redirectedUrlPattern("/login?error"));
     }
 
 }

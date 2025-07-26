@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/css/loginstyles.css}" />
+    <link rel="stylesheet" th:href="@{/css/generalStyles.css}" />
     <title>Abe Chat</title>
 </head>
 <body class="background-container">
@@ -10,19 +10,15 @@
     <nav class="navbar">
     <ul>
         <li><a th:href="@{/abechat/}" class="button">Home</a></li>
-        <li><a class="button">Chat</a></li>
-        <li><a class="button">Profile</a></li>
-        <li><a class="button">Settings</a></li>
     </ul>
 </nav>
 
 <!-- Login form-->
-<!-- TODO: hook up backend. REMEMBER TO MATCH THE ENDPOINT TO WHATEVER GETS MADE LATER-->
 <div class="background-container">
         <h1>Login</h1>
         <div class="form-container">
-            <div th:if="${param.error}">
-			    Invalid username and password.
+            <div th:if="${param.error}" class="error-message">
+			    Invalid username or password.
             </div>
             <form th:action="@{/login}" method="post" class="login-form">
                 <div class="form-group">
@@ -33,11 +29,9 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required />
                 </div>
-                <div th:if="${param.error}" class="error-message">
-                    Invalid username or password
-                </div>
                 <button type="submit" class="button">Login</button>
             </form>
+            <p>Need to create an account? <a th:href="@{/createUser}">Sign up here</a></p>
         </div>
     </div>
 </body>

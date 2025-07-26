@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/generalStyles.css}" />
+    <title>Abe Chat</title>
+</head>
+<body class="background-container">
+       <!-- placeholder navbar -->
+<nav class="navbar">
+    <ul>
+        <li><a th:href="@{/abechat/}" class="button">Home</a></li>
+        <li><a th:href="@{/login}" class="button">Login</a></li>
+    </ul>
+</nav>
+<!-- User Creation Form -->
+<div class="background-container">  
+    <h1>Create User</h1>
+    <!-- Display general error message -->
+        <div th:if="${errorMessage}" class="error-message">
+            <span th:text="${errorMessage}"></span>
+        </div>
+    <div class="form-container">
+        <form th:action="@{/createUser}" th:object="${createUserForm}" method="post" class="user-creation-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" th:field="*{username}" required />
+            </div>  
+            <span class="error-message" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username is already in use</span>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" th:field="*{password}" required />
+            </div>  
+             <span class="error-message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password does not meet requirements</span>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}" required />
+            </div>
+            <span class="error-message" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">Passwords do not match</span>
+            <button type="submit" class="button">Create User</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

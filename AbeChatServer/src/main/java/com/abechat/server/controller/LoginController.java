@@ -4,6 +4,10 @@ import com.abechat.server.model.Request;
 import com.abechat.server.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +43,9 @@ public class LoginController {
             loginService.login(login, request, response);
         } catch (AuthenticationException e) {
             return "redirect:/login?error";
+        } catch(Exception e){
+             return "redirect:/error?message=" + URLEncoder.encode("Error logging in user: " + e.getMessage(), StandardCharsets.UTF_8); //Sends specific error message to customer error page
         }
-
         return "redirect:/"; // change to whatever page we go to after login
     }
 }
