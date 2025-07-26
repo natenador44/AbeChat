@@ -10,6 +10,10 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new WebSocketHandler(), "/user/connect");
+        var handler = new WebSocketHandler();
+        // for the web ui, requires active session
+        registry.addHandler(handler, "/user/connect");
+        // for the API, requires everything an API user requires
+        registry.addHandler(handler, "/api/user/connect");
     }
 }
