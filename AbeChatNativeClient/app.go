@@ -1,9 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
-	"fmt"
 	"log/slog"
+	"net/url"
 	"os"
 	"path"
 
@@ -14,7 +15,7 @@ import (
 type App struct {
 	inner      fyne.App
 	MainWindow fyne.Window
-	*Service
+	Service
 }
 
 func NewApp() *App {
@@ -38,16 +39,16 @@ func (a *App) Start() error {
 		return err
 	}
 
-	apiKey, err := getApiKey(appDir)
+	connections, err := getConnectionDetails(appDir)
 
 	if err != nil {
 		return err
 	}
 
-	if len(apiKey) == 0 {
-		showApiKeyForm(a)
+	if len(connections) != 0 {
+		showApiKeyForm(a, connections)
 	} else {
-		a.apiKey = apiKey
+
 		// a.screen = &LoginScreen {}
 	}
 
@@ -56,22 +57,44 @@ func (a *App) Start() error {
 	return nil
 }
 
-func getApiKey(appDir string) (string, error) {
-	apiKeyBytes, err := os.ReadFile(path.Join(appDir, ".api-key"))
+func getConnectionDetails(appDir string) ([]ConnectionDetails, error) {
+	apiKeyBytes, err := os.ReadFile(path.Join(appDir, "connections.json"))
 
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			slog.Info("API Key file not found, prompting..")
-			return "", nil
+			slog.Info("Connections file not found")
+			return nil, nil
 		} else {
-			return "", err
+			return nil, err
 		}
 	} else if len(apiKeyBytes) == 0 {
-		slog.Info("API Key file is empty, prompting..")
-		return "", nil
+		slog.Info("Connection file is empty")
+		return nil, nil
 	} else {
-		slog.Info("API Key found")
-		return string(apiKeyBytes), nil
+		slog.Info("Connections found")
+		var existingConns []struct {
+			Name      string `json:"name"`
+			ServerUrl string `json:"serverUrl"`
+			ApiKey    string `json:"apiKey"`
+		}
+		err := json.Unmarshal(apiKeyBytes, &existingConns)
+
+		connections := make([]ConnectionDetails, len(existingConns))
+
+		for i, c := range existingConns {
+			u, err := url.ParseRequestURI(c.ServerUrl)
+			if err != nil {
+				return nil, err
+			}
+
+			connections[i] = ConnectionDetails{
+				c.Name,
+				u,
+				c.ApiKey,
+			}
+		}
+
+		return connections, err
 	}
 }
 
@@ -79,16 +102,16 @@ func appDir() (string, error) {
 	h, err := os.UserHomeDir()
 
 	if err != nil {
-		if errors.Is(err, os.ErrNotExist) {
-			err = os.MkdirAll(h, os.ModeDir)
-
-			if err != nil {
-				return "", fmt.Errorf("failed to create app dir: %s", err)
-			}
-		} else {
-			return "", nil
-		}
+		return "", err
 	}
 
-	return path.Join(h, ".abechat"), nil
+	appDir := path.Join(h, ".abechat")
+
+	err = os.MkdirAll(appDir, os.ModePerm)
+
+	if err != nil {
+		return "", err
+	}
+
+	return appDir, nil
 }

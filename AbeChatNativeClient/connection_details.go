@@ -11,37 +11,44 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func showApiKeyForm(a *App) {
-	form := makeApiKeyUI(a)
+func showApiKeyForm(a *App, connections []ConnectionDetails) {
+	form := makeApiKeyUI(a, connections, NewService)
 
 	content := container.New(
 		layout.NewVBoxLayout(),
 		form.instructions,
+		form.connectionOptions,
 		form.error,
-		form.urlEntry,
-		form.apiKeyEntry,
-		container.New(layout.NewHBoxLayout(), form.progress, form.submitButton),
+		container.New(layout.NewFormLayout(), form.nameLabel, form.nameEntry, form.urlLabel, form.urlEntry, form.apiKeyLabel, form.apiKeyEntry),
+		form.submitButton,
 	)
 	a.MainWindow.SetContent(content)
-	a.MainWindow.Resize(fyne.NewSize(300, 75))
+	a.MainWindow.Resize(fyne.NewSize(400, 100))
 
 	a.MainWindow.Canvas().FocusNext()
 }
 
 type apiKeyForm struct {
-	instructions *widget.Label
-	error        *widget.Label
-	urlEntry     *widget.Entry
-	apiKeyEntry  *widget.Entry
-	submitButton *widget.Button
-	progress     *widget.ProgressBarInfinite
+	instructions      *widget.Label
+	connectionOptions *widget.Select
+	error             *widget.Label
+	nameLabel         *widget.Label
+	nameEntry         *widget.Entry
+	urlLabel          *widget.Label
+	urlEntry          *widget.Entry
+	apiKeyLabel       *widget.Label
+	apiKeyEntry       *widget.Entry
+	submitButton      *widget.Button
+	progress          *widget.ProgressBarInfinite
 }
 
-func makeApiKeyUI(a *App) apiKeyForm {
+func makeApiKeyUI(a *App, connections []ConnectionDetails, serviceCreator func(ConnectionDetails) Service) apiKeyForm {
 	instructions := widget.NewLabel("Enter in the Server's Connection Details")
 	errorLabel := widget.NewLabel("")
 	errorLabel.Importance = widget.DangerImportance
 	errorLabel.Hidden = true
+
+	nameEntry := widget.NewEntry()
 
 	urlEntry := widget.NewEntry()
 	urlEntry.Validator = func(u string) (err error) {
@@ -76,6 +83,11 @@ func makeApiKeyUI(a *App) apiKeyForm {
 			errorLabel.Hidden = false
 			errorLabel.SetText(err.Error())
 			a.MainWindow.Canvas().Focus(apiKeyEntry)
+		} else if len(nameEntry.Text) == 0 {
+			// eventually check for duplicates
+			errorLabel.Hidden = false
+			errorLabel.SetText("Name cannot be empty")
+			a.MainWindow.Canvas().Focus(nameEntry)
 		} else {
 			errorLabel.Hidden = true
 
@@ -85,7 +97,7 @@ func makeApiKeyUI(a *App) apiKeyForm {
 			slog.Info("Successfully got connection details, testing connection...", "connection url", urlEntry.Text)
 
 			u, _ := url.ParseRequestURI(urlEntry.Text)
-			s := NewService(u, apiKeyEntry.Text)
+			s := serviceCreator(ConnectionDetails{nameEntry.Text, u, apiKeyEntry.Text})
 
 			err := s.Ping()
 
@@ -109,19 +121,48 @@ func makeApiKeyUI(a *App) apiKeyForm {
 	apiKeyEntry.OnSubmitted = func(_ string) { submit() }
 	urlEntry.OnSubmitted = func(_ string) { submit() }
 
-	submitButton := widget.NewButton("Continue", submit)
+	submitButton := widget.NewButton("Connect", submit)
 	submitButton.Disable()
 
 	apiKeyEntry.OnChanged = createOnChangeFunc(apiKeyEntry, submitButton, errorLabel)
 	urlEntry.OnChanged = createOnChangeFunc(urlEntry, submitButton, errorLabel)
 
+	options := make([]string, len(connections))
+	for i, c := range connections {
+		options[i] = c.Name
+	}
+
+	connectionOptions := widget.NewSelect(options, func(selected string) {
+		for _, c := range connections {
+			if c.Name == selected {
+				nameEntry.SetText(c.Name)
+				urlEntry.SetText(c.ApiUrl.String())
+				apiKeyEntry.SetText(c.ApiKey)
+			}
+		}
+	})
+
+	slog.Info("connections", "len", len(connections))
+	if len(connections) <= 1 {
+		connectionOptions.Disable()
+	}
+
+	if len(connections) >= 1 {
+		connectionOptions.SetSelectedIndex(0)
+	}
+
 	return apiKeyForm{
-		instructions: instructions,
-		error:        errorLabel,
-		urlEntry:     urlEntry,
-		apiKeyEntry:  apiKeyEntry,
-		submitButton: submitButton,
-		progress:     progress,
+		instructions:      instructions,
+		connectionOptions: connectionOptions,
+		error:             errorLabel,
+		nameLabel:         widget.NewLabel("Server Name:"),
+		nameEntry:         nameEntry,
+		urlLabel:          widget.NewLabel("Server API URL:"),
+		urlEntry:          urlEntry,
+		apiKeyLabel:       widget.NewLabel("API Key:"),
+		apiKeyEntry:       apiKeyEntry,
+		submitButton:      submitButton,
+		progress:          progress,
 	}
 }
 

@@ -43,7 +43,7 @@ public class UserController {
             LOGGER.info("[{}] Attempting to create new user {}", servletRequest.getRemoteAddr(), newUserRequest.username());
             userService.createNew(newUserRequest);
             LOGGER.info("[{}] Successfully created {}", servletRequest.getRemoteAddr(), newUserRequest.username());
-            return ResponseEntity.created(URI.create("/abechat/login/")).build();
+            return ResponseEntity.created(URI.create("/api/login/")).build();
         } catch (UsernameAlreadyExists e) {
             return ResponseEntity.badRequest().build();
         }

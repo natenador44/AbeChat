@@ -1,6 +1,6 @@
 package com.abechat.server.api;
 
-import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ public class PingController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PingController.class);
 
     @GetMapping(value = {"/ping", "/ping/"})
-    public ResponseEntity<Void> ping(ServletRequest request) {
+    public ResponseEntity<Void> ping(HttpServletRequest request) {
         LOGGER.info("[{}] API Pinged", request.getRemoteAddr());
         return ResponseEntity.ok().build();
     }
