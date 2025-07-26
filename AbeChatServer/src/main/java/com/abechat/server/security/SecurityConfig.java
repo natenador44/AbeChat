@@ -1,5 +1,6 @@
 package com.abechat.server.security;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -62,7 +63,8 @@ public class SecurityConfig {
      */
     private static HttpSecurity enableCommonWebSecurity(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/login", "/createUser", "/css/*.css", "/error").permitAll()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .requestMatchers("/", "/login", "/createUser", "/error").permitAll()
                 .anyRequest().authenticated());
     }
 
