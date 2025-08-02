@@ -55,7 +55,7 @@ h1 {
 }
 
 .navbar li {
-    display: inline;
+    display: flex;
 }
 
 .button {

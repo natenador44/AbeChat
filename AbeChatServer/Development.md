@@ -48,3 +48,41 @@ The version of that jar may change in the future.
 
 #### Intellij IDEA
 Find the `AbeChatServerApplication` class and press the run button intellij idea provides for you.
+
+#### Docker Setup/Running, Linux
+Install using below commands for CLI only, GUI also availible for Linux.
+```shell
+# Uninstall any conflicting packages
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+
+# Setup docker repo, we want to use their sources
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \ 
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+# Install required docker packages
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Test with hello world, may need to start docker daemon manually
+sudo service docker start
+sudo docker run hello-world
+```
+https://docs.docker.com/engine/install/ubuntu/#install-from-a-package
+
+Run post install steps, this sets up your user under the docker group to allow non-sudo access to containers.
+```shell
+sudo groupadd docker
+sudo usermod -aG docker $USER
+# Log out and back in for changes to take effect
+```
+https://docs.docker.com/engine/install/linux-postinstall/
